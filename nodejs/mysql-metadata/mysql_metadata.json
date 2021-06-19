@@ -1,0 +1,28 @@
+{
+  "target-bucket": "ccna-tis-qse-stage-nonprod/aurora-metadata",
+  "target-key": "ccna-tis-column-usage.json",
+  "sql-cmd": "SHOW DATABASES",
+  "host": "ccna-tis-test.c3r26e1u3bfm.us-east-1.rds.amazonaws.com",
+  "database": "ccna_tis",
+  "user": "ccna_tis",
+  "password": "ccna_tispass"
+}
+
+
+"sql-cmd": "SELECT * FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE",
+"column-metadata": "SELECT * FROM INFORMATION_SCHEMA.COLUMNS"
+
+var connection = mysql.createConnection({
+    host: "ccna-tis-test.c3r26e1u3bfm.us-east-1.rds.amazonaws.com",
+    user: "ccna_tis",
+    password: "ccna_tispass",
+    database: "ccna_tis"
+});
+
+nonprod_rds_host:  "ccna-tis-test.c3r26e1u3bfm.us-east-1.rds.amazonaws.com"
+prod_rds_host: "ccna-tis-prod.c4dqtpgn78cb.us-east-1.rds.amazonaws.com"
+
+nonprod_s3_bucket:  "ccna-tis-qse-stage-nonprod/aurora-metadata"
+prod_s3_bucket: "ccna-tis-qse-stage-prod/aurora-metadata"
+
+nonprod_rds_cluster_arn:  arn:aws:rds:us-east-1:526385476100:cluster:ccna-tis-test-cluster

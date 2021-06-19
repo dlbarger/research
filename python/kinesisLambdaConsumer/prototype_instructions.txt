@@ -1,0 +1,72 @@
+[AWS Prototype:  Building Lambda Consumer for Kinesis Stream]
+https://docs.aws.amazon.com/lambda/latest/dg/with-kinesis-example.html
+
+[1.0 Create Role for Lambda/Kinesis]
+{
+    "Role": {
+        "Path": "/",
+        "RoleName": "lambda-kinesis-role",
+        "RoleId": "AROA3LFB3WMM7FFYNNOQG",
+        "Arn": "arn:aws:iam::779876021017:role/lambda-kinesis-role",
+        "CreateDate": "2021-01-28T15:50:49Z",
+        "AssumeRolePolicyDocument": {
+            "Version": "2012-10-17",
+            "Statement": [
+                {
+                    "Effect": "Allow",
+                    "Principal": {
+                        "Service": "lambda.amazonaws.com"
+                    },
+                    "Action": "sts:AssumeRole"
+                }
+            ]
+        },
+        "Description": "Allows Lambda functions to call AWS services on your behalf.",
+        "MaxSessionDuration": 3600
+    }
+}
+
+[2.0 Zip Lambda Function Code]
+zip function.zip index.py
+
+[3.0 Create Lambda Function]
+aws lambda create-function --function-name ProcessKinesisRecord --zip-file fileb://function.zip --handler index.lambda_handler --runtime python3.7 --role arn:aws:iam::779876021017:role/lambda-kinesis-role
+
+[3.1 Delete Lambda Function (only to rebuild resulting from errors)]
+aws lambda delete-function --function-name ProcessKinesisRecord
+
+[4.0 Test Lambda Function (Invoke Function)]
+aws lambda invoke --function-name ProcessKinesisRecord --payload file://input.txt out.txt
+
+[5.0 Create Kinesis Stream]
+aws kinesis create-stream --stream-name dbarger-lambda-stream --shard-count 1
+
+[6.0 Get Kinesis Stream ARN using CLI]
+aws kinesis describe-stream --stream-name dbarger-lambda-stream
+
+[7.0 Add Event to Stream]
+aws lambda create-event-source-mapping --function-name ProcessKinesisRecord --event-source arn:aws:kinesis:us-east-1:779876021017:stream/dbarger-lambda-stream  --batch-size 100 --starting-position LATEST
+
+Expected Output from create-event-source-mapping:
+{
+    "UUID": "37e55fb8-91ca-4abc-98aa-5cd65059bf6c",
+    "BatchSize": 100,
+    "EventSourceArn": "arn:aws:kinesis:us-east-1:779876021017:stream/dbarger-lambda-stream",
+    "FunctionArn": "arn:aws:lambda:us-east-1:779876021017:function:ProcessKinesisRecord",
+    "LastModified": 1611850885.478,
+    "LastProcessingResult": "No records processed",
+    "State": "Creating",
+    "StateTransitionReason": "User action"
+}
+
+[8.0 Get Event Source Mapping in Stream]
+aws lambda list-event-source-mappings --function-name ProcessKinesisRecord --event-source arn:aws:kinesis:us-east-1:779876021017:stream/dbarger-lambda-stream
+
+[9.0 Test Stream Mapping]
+aws kinesis put-record --stream-name dbarger-lambda-stream --partition-key 1 --data "Running a test."
+
+Expected output:
+{
+    "ShardId": "shardId-000000000000",
+    "SequenceNumber": "49614984704560559622749286228337415672409762624627015682"
+}

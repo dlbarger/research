@@ -1,0 +1,28 @@
+{
+    "StreamDescription": {
+        "Shards": [
+            {
+                "ShardId": "shardId-000000000000",
+                "HashKeyRange": {
+                    "StartingHashKey": "0",
+                    "EndingHashKey": "340282366920938463463374607431768211455"
+                },
+                "SequenceNumberRange": {
+                    "StartingSequenceNumber": "49614984704560559622749286221795918062474956400255565826"
+                }
+            }
+        ],
+        "StreamARN": "arn:aws:kinesis:us-east-1:779876021017:stream/dbarger-lambda-stream",
+        "StreamName": "dbarger-lambda-stream",
+        "StreamStatus": "ACTIVE",
+        "RetentionPeriodHours": 24,
+        "EnhancedMonitoring": [
+            {
+                "ShardLevelMetrics": []
+            }
+        ],
+        "EncryptionType": "NONE",
+        "KeyId": null,
+        "StreamCreationTimestamp": 1611850279.0
+    }
+}

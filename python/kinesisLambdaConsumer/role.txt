@@ -1,0 +1,23 @@
+{
+    "Role": {
+        "Path": "/",
+        "RoleName": "lambda-kinesis-role",
+        "RoleId": "AROA3LFB3WMM7FFYNNOQG",
+        "Arn": "arn:aws:iam::779876021017:role/lambda-kinesis-role",
+        "CreateDate": "2021-01-28T15:50:49Z",
+        "AssumeRolePolicyDocument": {
+            "Version": "2012-10-17",
+            "Statement": [
+                {
+                    "Effect": "Allow",
+                    "Principal": {
+                        "Service": "lambda.amazonaws.com"
+                    },
+                    "Action": "sts:AssumeRole"
+                }
+            ]
+        },
+        "Description": "Allows Lambda functions to call AWS services on your behalf.",
+        "MaxSessionDuration": 3600
+    }
+}
